@@ -229,5 +229,6 @@ This project is licensed under the **MIT License**.
 
 ## Contact
 
-Your Name - your.email@example.com  
-Project Link: [https://github.com/yourusername/food-delivery-service](https://github.com/yourusername/food-delivery-service)
+Name: Sankalp
+Email - sankalpagarwal1304@gmail.com
+Project Link: [https://github.com/git-Sankalp-Agarwal/Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)
