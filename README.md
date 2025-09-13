@@ -67,17 +67,12 @@ spring.datasource.username = your_username
 spring.datasource.password = your_password
 ```
 
-Or run the SQL schema script:
-```bash
-mysql -u root -p < schema.sql
-```
-
-### 3. Build the Application
+### 2. Build the Application
 ```bash
 mvn clean install
 ```
 
-### 4. Run the Application
+### 3. Run the Application
 ```bash
 mvn spring-boot:run
 ```
