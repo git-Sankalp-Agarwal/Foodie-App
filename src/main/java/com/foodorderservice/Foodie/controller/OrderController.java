@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -37,12 +39,13 @@ public class OrderController {
 
         OrderResponseDTO createdOrder = orderService.createOrder(orderRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(ApiResponseWrapper.<OrderResponseDTO>builder()
-                                                     .success(true)
-                                                     .message("Order created successfully")
-                                                     .data(createdOrder)
-                                                     .build());
+        ApiResponseWrapper<OrderResponseDTO> wrapper = ApiResponseWrapper.<OrderResponseDTO>builder()
+                                                                         .success(true)
+                                                                         .message("Order created successfully")
+                                                                         .data(createdOrder)
+                                                                         .build();
+
+        return ResponseEntity.ok(wrapper);
     }
 
     @GetMapping
@@ -69,6 +72,7 @@ public class OrderController {
                                                    .success(true)
                                                    .message("Orders retrieved successfully")
                                                    .data(orders)
+                                                   .timeStamp(LocalDateTime.now())
                                                    .build());
     }
 
@@ -84,6 +88,7 @@ public class OrderController {
                                                    .success(true)
                                                    .message("Order retrieved successfully")
                                                    .data(order)
+                                                   .timeStamp(LocalDateTime.now())
                                                    .build());
     }
 
@@ -106,6 +111,7 @@ public class OrderController {
                                                    .success(true)
                                                    .message("Order status retrieved successfully")
                                                    .data(statusResponse)
+                                                   .timeStamp(LocalDateTime.now())
                                                    .build());
     }
 
@@ -122,6 +128,7 @@ public class OrderController {
                                                    .success(true)
                                                    .message("Order status updated successfully")
                                                    .data(updatedOrder)
+                                                   .timeStamp(LocalDateTime.now())
                                                    .build());
     }
 }

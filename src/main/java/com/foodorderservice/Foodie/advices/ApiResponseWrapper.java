@@ -8,26 +8,21 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponseWrapper<T> {
 
-    private boolean success;
-    private String message;
-    private LocalDateTime timeStamp = LocalDateTime.now();
-    private T data;
-    private ApiError error;
+    private final boolean success;
 
-    public ApiResponseWrapper(T data) {
-        this();
-        this.data = data;
-    }
+    private final String message;
 
-    public ApiResponseWrapper(ApiError error) {
-        this();
-        this.error = error;
-    }
+    @Builder.Default
+    private final LocalDateTime timeStamp = LocalDateTime.now();
+
+    private final T data;
+
+    private final ApiError error;
 }
+

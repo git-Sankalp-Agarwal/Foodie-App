@@ -262,13 +262,6 @@ All errors follow consistent JSON response format:
 
 ---
 
-## Monitoring
-
-- Health: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
-- Metrics: [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
-
----
-
 ## Contact
 
 - Name: Sankalp
