@@ -15,7 +15,7 @@ public class PendingOrderRequeuer {
     private final OrderRepository orderRepository;
     private final QueueService queueService;
 
-    @PostConstruct
+    //@PostConstruct
     public void requeuePendingOrders() {
         orderRepository.findByStatus(OrderStatus.PENDING).forEach(o -> {
             try {

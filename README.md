@@ -61,12 +61,10 @@ cd Foodie-App
 
 ### 2. Configure MySQL Database
 Create a MySQL database and update the credentials in `application.yml`:
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/food_delivery_db?createDatabaseIfNotExist=true
-    username: your_username
-    password: your_password
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/foodie_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+spring.datasource.username = your_username
+spring.datasource.password = your_password
 ```
 
 Or run the SQL schema script:
