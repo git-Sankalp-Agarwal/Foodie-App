@@ -43,4 +43,3 @@ INSERT INTO order_items (order_id, item_name, quantity, price) VALUES
 (3, 'Pasta', 2, 12.99),
 (3, 'Garlic Bread', 1, 4.99),
 (3, 'Ice Cream', 2, 5.50);
-

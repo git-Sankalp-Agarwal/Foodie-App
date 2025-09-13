@@ -5,13 +5,12 @@ A scalable backend service for processing food delivery orders built with Java, 
 ## Features
 
 ✅ RESTful API for order management  
-✅ Asynchronous order processing with in-memory queue (AWS SQS ready)  
+✅ Asynchronous order processing with in-memory queue
 ✅ MySQL database with optimized queries and indexing  
 ✅ Pagination support for fetching orders  
 ✅ Comprehensive validation and exception handling  
 ✅ Service layer abstraction with DTOs  
-✅ Background consumer for automatic order processing  
-✅ Swagger UI documentation  
+✅ Background consumer for automatic order processing
 ✅ Spring Boot best practices and clean architecture  
 
 ## Tech Stack
@@ -21,24 +20,26 @@ A scalable backend service for processing food delivery orders built with Java, 
 - MySQL 8.0
 - Spring Data JPA
 - Lombok
-- SpringDoc OpenAPI (Swagger)
 - Maven
 
 ## Project Structure
 ```
 food-delivery-service/
-├── src/main/java/com/fooddelivery/
+├── src/main/java/com/foodorderservice/Foodie
 │   ├── controller/       # REST controllers
 │   ├── service/          # Business logic
 │   ├── repository/       # Data access layer
 │   ├── entity/           # JPA entities
-│   ├── dto/              # Data transfer objects
+│   ├── dtos/             # Data transfer objects
 │   ├── mapper/           # Entity-DTO mappers
+│   ├── config/           # Configurations
+│   ├── config/           # Configurations
+│   ├── advices/           # Response advices and Global exception handler
 │   ├── exception/        # Custom exceptions
-│   ├── config/           # Configuration classes
-│   └── FoodDeliveryApplication.java
+│   ├         # Configuration classes
+│   └── FoodApplication.java
 ├── src/main/resources/
-│   └── application.yml   # Application configuration
+│   └── application.properties   # Application configuration
 ├── pom.xml
 └── README.md
 ```
@@ -54,8 +55,8 @@ food-delivery-service/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/food-delivery-service.git
-cd food-delivery-service
+git clone https://github.com/git-Sankalp-Agarwal/Foodie-App
+cd Foodie-App
 ```
 
 ### 2. Configure MySQL Database
@@ -84,7 +85,7 @@ mvn spring-boot:run
 ```
 Or run the JAR:
 ```bash
-java -jar target/food-delivery-service-1.0.0.jar
+java -jar target/foodie-app-1.0.0.jar
 ```
 
 The application will start on `http://localhost:8080`
@@ -119,6 +120,105 @@ Valid status transitions:
 - DELIVERED → (no transitions)  
 - CANCELLED → (no transitions)  
 
+## Sample API payloads & responses
+
+Base URL: `http://localhost:8080` (adjust port if different)
+
+## Create Order
+
+**POST** `/api/orders` (example path; adapt to your controller)
+
+**Request JSON:**
+```json
+{
+  "customerName": "Alice Johnson",
+  "items": [
+    { "itemName": "Burger", "quantity": 2, "price": 8.99 },
+    { "itemName": "Fries", "quantity": 1, "price": 3.99 },
+    { "itemName": "Coke", "quantity": 2, "price": 2.50 }
+  ],
+  "totalAmount": 26.97
+}
+```
+
+**Successful response (201 Created)**
+```json
+{
+  "id": 10,
+  "customerName": "Alice Johnson",
+  "totalAmount": 26.97,
+  "status": "PENDING",
+  "orderTime": "2025-09-13T20:10:00",
+  "items": [ ... ]
+}
+```
+
+**Validation error (400 Bad Request)**
+```json
+{
+  "timestamp": "2025-09-13T20:12:00",
+  "status": 400,
+  "errors": ["Total amount does not match sum of items"]
+}
+```
+
+---
+
+## Get Order by ID
+
+**GET** `/api/orders/{id}`
+
+**Successful response (200)**
+```json
+{
+  "id": 10,
+  "customerName": "Alice Johnson",
+  "totalAmount": 26.97,
+  "status": "PROCESSED",
+  "orderTime": "2025-09-13T20:10:00",
+  "processedTime": "2025-09-13T20:10:20",
+  "items": [ {"itemName":"Burger","quantity":2,"price":8.99}, ... ]
+}
+```
+
+---
+
+## Get Orders (paged)
+
+**GET** `/api/orders?page=0&size=10`
+
+**Sample response (200)**
+```json
+{
+  "content": [ { /* order DTOs */ } ],
+  "pageNumber": 0,
+  "pageSize": 10,
+  "totalElements": 42,
+  "totalPages": 5,
+  "first": true,
+  "last": false
+}
+```
+
+---
+
+## Update Order Status
+
+**PUT** `/api/orders/{id}/status`
+
+**Request**
+```json
+{ "status": "CANCELLED" }
+```
+
+**Response (200)**
+```json
+{ "id": 10, "status": "CANCELLED", ... }
+```
+
+---
+
+
 ## Asynchronous Processing
 
 - Orders are added to an **in-memory queue**.
@@ -131,24 +231,6 @@ Valid status transitions:
 - Check status → should be `PENDING`.
 - Wait a few seconds.
 - Status should move to `PROCESSED`.
-
----
-
-## Switching to AWS SQS
-
-To use AWS SQS instead of in-memory queue, update `application.yml`:
-
-```yaml
-aws:
-  sqs:
-    enabled: true
-    region: us-east-1
-    queue-name: food-delivery-orders
-    access-key: your-access-key
-    secret-key: your-secret-key
-```
-
-Then implement `SQSQueueService` extending the current queue service.
 
 ---
 
@@ -187,48 +269,8 @@ All errors follow consistent JSON response format:
 
 ---
 
-## Performance Considerations
-
-- Connection pooling with HikariCP.
-- Add Redis caching for performance.
-- Implement rate limiting on APIs.
-- Async processing improves response time.
-- Proper database indexing.
-
----
-
-## Future Enhancements
-
-- Add Redis caching
-- WebSocket for real-time updates
-- Authentication & Authorization
-- GPS-based order tracking
-- Payment integration
-- Notification service (Email/SMS)
-- Analytics & reporting
-- Circuit breaker pattern
-- Docker & Kubernetes support
-
----
-
-## Contributing
-
-1. Fork the repo
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
----
-
-## License
-
-This project is licensed under the **MIT License**.
-
----
-
 ## Contact
 
-Name: Sankalp
-Email - sankalpagarwal1304@gmail.com
-Project Link: [https://github.com/git-Sankalp-Agarwal/Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)
+- Name: Sankalp
+- Email - sankalpagarwal1304@gmail.com
+- Link: [https://github.com/git-Sankalp-Agarwal/Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)
