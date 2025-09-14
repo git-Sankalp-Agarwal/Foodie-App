@@ -461,7 +461,7 @@ All errors follow consistent JSON response format:
     ]
   }
 }
-
+```
 ---
 
 ## 📬 Contact
