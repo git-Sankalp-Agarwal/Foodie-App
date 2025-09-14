@@ -84,7 +84,7 @@ java -jar target/foodie-app-1.0.0.jar
 The application will start on `http://localhost:8080`
 
 ## API Documentation
-Access Swagger UI at: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+Access Endpoint via Postman UI at: [http://localhost:8080/]
 
 ### Available Endpoints
 
@@ -96,24 +96,9 @@ Access Swagger UI at: [http://localhost:8080/swagger-ui.html](http://localhost:8
 | GET    | /api/orders/{id}/status | Get order status    |
 | PATCH  | /api/orders/{id}/status | Update order status |
 
-... (Detailed examples as provided earlier) ...
 
-## Order Status Flow
 
-```
-PENDING → PROCESSING → PROCESSED → DELIVERED
-    ↓                      ↓
-CANCELLED            CANCELLED
-```
-
-Valid status transitions:  
-- PENDING → PROCESSING, CANCELLED  
-- PROCESSING → PROCESSED, CANCELLED  
-- PROCESSED → DELIVERED  
-- DELIVERED → (no transitions)  
-- CANCELLED → (no transitions)  
-
-## Sample API payloads & responses
+## API Usage Examples
 
 Base URL: `http://localhost:8080` (adjust port if different)
 
@@ -200,7 +185,7 @@ Base URL: `http://localhost:8080` (adjust port if different)
 
 ## Get Order by ID
 
-**GET** `/api/orders/{id}`
+**GET** `http://localhost:8080/api/orders/1`
 
 **Successful response (200)**
 ```json
@@ -238,9 +223,9 @@ Base URL: `http://localhost:8080` (adjust port if different)
 
 ---
 
-## Get Orders (paged)
+## Get All Orders (Paginated)
 
-**GET** `/api/orders?page=0&size=10`
+**GET** `http://localhost:8080/api/orders?page=0&size=10&sortBy=orderTime&sortDirection=DESC`
 
 **Sample response (200)**
 ```json
@@ -360,6 +345,26 @@ Base URL: `http://localhost:8080` (adjust port if different)
   }
 }
 ```
+---
+
+## Get Order Status
+
+**GET** `http://localhost:8080/api/orders/1/status`
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Order status retrieved successfully",
+  "timeStamp": "2025-09-14T14:17:54.09427",
+  "data": {
+    "orderId": 1,
+    "status": "PROCESSED",
+    "orderTime": "2025-09-14T13:27:08",
+    "processedTime": "2025-09-14T13:27:13"
+  }
+}
+```
 
 ---
 
@@ -406,8 +411,22 @@ Base URL: `http://localhost:8080` (adjust port if different)
 }
 ```
 
----
+## Order Status Flow
 
+```
+PENDING → PROCESSING → PROCESSED → DELIVERED
+    ↓                      ↓
+CANCELLED            CANCELLED
+```
+
+Valid status transitions:  
+- PENDING → PROCESSING, CANCELLED  
+- PROCESSING → PROCESSED, CANCELLED  
+- PROCESSED → DELIVERED  
+- DELIVERED → (no transitions)  
+- CANCELLED → (no transitions)  
+
+---
 
 ## Asynchronous Processing
 
@@ -421,16 +440,6 @@ Base URL: `http://localhost:8080` (adjust port if different)
 - Check status → should be `PENDING`.
 - Wait a few seconds.
 - Status should move to `PROCESSED`.
-
----
-
-## Database Optimization
-
-- Indexes on frequently queried columns (`status`, `orderTime`, `customerName`).
-- Lazy loading for order items.
-- Batch processing for bulk operations.
-- Query optimization with custom JPQL queries.
-- HikariCP connection pooling.
 
 ---
 

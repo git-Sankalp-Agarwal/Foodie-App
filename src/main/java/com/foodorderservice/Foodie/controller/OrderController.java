@@ -4,17 +4,13 @@ import com.foodorderservice.Foodie.advices.ApiResponseWrapper;
 import com.foodorderservice.Foodie.dtos.*;
 import com.foodorderservice.Foodie.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +27,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping
-    @Operation(summary = "Create a new order", description = "Creates a new food delivery order")
+    @PostMapping    @Operation(summary = "Create a new order", description = "Creates a new food delivery order")
     public ResponseEntity<ApiResponseWrapper<OrderResponseDTO>> createOrder(
             @Valid @RequestBody OrderRequestDTO orderRequest) {
         log.info("Received order creation request for customer: {}", orderRequest.getCustomerName());

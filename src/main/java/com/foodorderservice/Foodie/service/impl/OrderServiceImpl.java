@@ -7,6 +7,7 @@ import com.foodorderservice.Foodie.entity.OrderItem;
 import com.foodorderservice.Foodie.entity.enums.OrderStatus;
 import com.foodorderservice.Foodie.exception.InvalidOrderStateException;
 import com.foodorderservice.Foodie.exception.OrderNotFoundException;
+import com.foodorderservice.Foodie.mapper.OrderMapper;
 import com.foodorderservice.Foodie.repository.OrderRepository;
 import com.foodorderservice.Foodie.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final ModelMapper modelMapper;
+    private final OrderMapper orderMapper;
     private final ApplicationEventPublisher eventPublisher;
 
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequest) {
@@ -40,8 +41,7 @@ public class OrderServiceImpl implements OrderService {
         if (calculatedTotal.compareTo(orderRequest.getTotalAmount()) != 0) {
             throw new InvalidOrderStateException("Total amount does not match sum of items");
         }
-
-        Order order = modelMapper.map(orderRequest, Order.class);
+        Order order = orderMapper.toEntity(orderRequest);
         order.setStatus(OrderStatus.PENDING);
 
 
@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 
         eventPublisher.publishEvent(new OrderCreatedEvent(savedOrder.getId()));
 
-        return modelMapper.map(savedOrder, OrderResponseDTO.class);
+        return orderMapper.toResponseDTO(savedOrder);
     }
 
 
@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         Page<Order> orderPage = orderRepository.findAll(pageable);
 
         List<OrderResponseDTO> orderDTOs = orderPage.getContent().stream()
-                                                    .map(order -> modelMapper.map(order, OrderResponseDTO.class))
+                                                    .map(order -> orderMapper.toResponseDTO(order))
                                                     .collect(Collectors.toList());
 
         return PageResponseDTO.<OrderResponseDTO>builder()
@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findByIdWithItems(id)
                                      .orElseThrow(() -> new OrderNotFoundException("Order not found with ID: " + id));
 
-        return modelMapper.map(order, OrderResponseDTO.class);
+        return orderMapper.toResponseDTO(order);
     }
 
     public OrderResponseDTO updateOrderStatus(Long id, OrderStatusUpdateDTO statusUpdate) {
@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
         Order updatedOrder = orderRepository.save(order);
         log.info("Order {} status updated successfully", id);
 
-        return modelMapper.map(updatedOrder, OrderResponseDTO.class);
+        return orderMapper.toResponseDTO(updatedOrder);
     }
 
     public void processOrder(Long orderId) {
