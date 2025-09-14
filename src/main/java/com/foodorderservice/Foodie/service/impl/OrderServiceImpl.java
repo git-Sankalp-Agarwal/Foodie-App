@@ -125,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
 
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.error("Order processing interrupted for order: {}", orderId);
