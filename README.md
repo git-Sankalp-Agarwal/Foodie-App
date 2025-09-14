@@ -101,8 +101,6 @@ java -jar target/foodie-app-1.0.0.jar
 | **GET**    | `/api/orders/{id}/status` | Get order status        |
 | **PATCH**  | `/api/orders/{id}/status` | Update order status     |
 
-📌 Swagger / OpenAPI docs will be available at:  
-`http://localhost:8080/swagger-ui.html` or `/swagger-ui/index.html`
 
 ---
 
@@ -136,6 +134,7 @@ java -jar target/foodie-app-1.0.0.jar
   ],
   "totalAmount": 26.97
 }
+```
 
 ✅ **Successful response (201 Created)**
 ```json
