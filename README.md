@@ -1,137 +1,130 @@
-# Food Delivery Order Service
+# 🍔 Food Delivery Order Service
 
-A scalable backend service for processing food delivery orders built with Java, Spring Boot, MySQL, and message queuing.
+A **scalable backend service** for processing food delivery orders, built with **Java, Spring Boot, MySQL, and async processing**.  
+Designed with **clean architecture, robust error handling, and real-world order workflows**.
 
-## Features
+---
 
-✅ RESTful API for order management  
-✅ Asynchronous order processing with in-memory queue
-✅ MySQL database with optimized queries and indexing  
-✅ Pagination support for fetching orders  
-✅ Comprehensive validation and exception handling  
-✅ Service layer abstraction with DTOs  
-✅ Background consumer for automatic order processing
-✅ Spring Boot best practices and clean architecture  
+## ✨ Features
 
-## Tech Stack
+- ✅ **RESTful API** for order management
+- ⚡ **Asynchronous order processing** with in-memory queue
+- 🗄️ **MySQL database** with optimized queries & indexing
+- 📑 **Pagination** support for fetching orders
+- 🛡️ **Validation & exception handling** with consistent JSON responses
+- 🏗️ **Service layer abstraction** with DTOs & mappers
+- 🔄 **Background consumer** for auto-processing orders
+- 🧹 **Spring Boot best practices** and clean codebase
 
-- Java 17
-- Spring Boot 3.2.0
-- MySQL 8.0
-- Spring Data JPA
-- Lombok
-- Maven
+---
 
-## Project Structure
-```
+## 🛠️ Tech Stack
+
+![Java](https://img.shields.io/badge/Java-17-red?logo=java)  
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-green?logo=springboot)  
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql)  
+![Maven](https://img.shields.io/badge/Maven-3.6+-C71A36?logo=apachemaven)  
+![Lombok](https://img.shields.io/badge/Lombok-enabled-yellow)
+
+---
+
+## 📂 Project Structure
+```bash
 food-delivery-service/
 ├── src/main/java/com/foodorderservice/Foodie
-│   ├── controller/       # REST controllers
-│   ├── service/          # Business logic
-│   ├── repository/       # Data access layer
-│   ├── entity/           # JPA entities
-│   ├── dtos/             # Data transfer objects
-│   ├── mapper/           # Entity-DTO mappers
-│   ├── config/           # Configurations
-│   ├── config/           # Configurations
-│   ├── advices/           # Response advices and Global exception handler
-│   ├── exception/        # Custom exceptions
-│   ├         # Configuration classes
+│   ├── controller/        # REST controllers
+│   ├── service/           # Business logic
+│   ├── repository/        # Data access layer
+│   ├── entity/            # JPA entities
+│   ├── dtos/              # Data transfer objects
+│   ├── mapper/            # Entity-DTO mappers
+│   ├── config/            # Configurations
+│   ├── advices/           # Response advices & Global exception handler
+│   ├── exception/         # Custom exceptions
 │   └── FoodApplication.java
 ├── src/main/resources/
-│   └── application.properties   # Application configuration
+│   └── application.properties   # App config
 ├── pom.xml
 └── README.md
 ```
 
-## Prerequisites
+---
 
-- Java 17 or higher
-- Maven 3.6+
-- MySQL 8.0+
-- Git
+## ⚙️ Prerequisites
 
-## Setup Instructions
+- ☕ Java 17
+- 📦 Maven 3.6+
+- 🗄️ MySQL 8.0+
+- 🌀 Git
 
-### 1. Clone the Repository
+---
+
+## 🚀 Setup Instructions
+
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/git-Sankalp-Agarwal/Foodie-App
 cd Foodie-App
 ```
 
-### 2. Configure MySQL Database
-Create a MySQL database and update the credentials in `application.yml`:
+### 2️⃣ Configure Database
+Update `application.yml` or `application.properties` with your credentials:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/foodie_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-spring.datasource.username = your_username
-spring.datasource.password = your_password
+spring.datasource.username=your_username
+spring.datasource.password=your_password
 ```
 
-### 2. Build the Application
+### 3️⃣ Build & Run
 ```bash
 mvn clean install
-```
-
-### 3. Run the Application
-```bash
 mvn spring-boot:run
 ```
+
 Or run the JAR:
 ```bash
 java -jar target/foodie-app-1.0.0.jar
 ```
 
-The application will start on `http://localhost:8080`
+👉 The service runs at: `http://localhost:8080`
 
-## API Documentation
-Access Endpoint via Postman UI at: [http://localhost:8080/]
+---
+
+## 📖 API Documentation
 
 ### Available Endpoints
+| Method | Endpoint                  | Description             |
+|--------|---------------------------|-------------------------|
+| **POST**   | `/api/orders`             | Create a new order      |
+| **GET**    | `/api/orders`             | Get all orders (paginated) |
+| **GET**    | `/api/orders/{id}`        | Get order by ID         |
+| **GET**    | `/api/orders/{id}/status` | Get order status        |
+| **PATCH**  | `/api/orders/{id}/status` | Update order status     |
 
-| Method | Endpoint             | Description            |
-|--------|----------------------|------------------------|
-| POST   | /api/orders          | Create a new order     |
-| GET    | /api/orders          | Get all orders (paginated) |
-| GET    | /api/orders/{id}     | Get order by ID        |
-| GET    | /api/orders/{id}/status | Get order status    |
-| PATCH  | /api/orders/{id}/status | Update order status |
+📌 Swagger / OpenAPI docs will be available at:  
+`http://localhost:8080/swagger-ui.html` or `/swagger-ui/index.html`
 
+---
 
+## 🍽️ API Usage Examples
 
-## API Usage Examples
+<details>
+<summary><b>▶️ Create Order</b></summary>
 
-Base URL: `http://localhost:8080` (adjust port if different)
-
-## Create Order
-
-**POST** `/api/orders` (example path; adapt to your controller)
-
-**Request JSON:**
+**POST** `/api/orders`
 ```json
 {
   "customerName": "Alice Johnson",
   "items": [
-    {
-      "itemName": "Burger",
-      "quantity": 2,
-      "price": 8.99
-    },
-    {
-      "itemName": "Fries",
-      "quantity": 1,
-      "price": 3.99
-    },
-    {
-      "itemName": "Coke",
-      "quantity": 2,
-      "price": 2.50
-    }
+    { "itemName": "Burger", "quantity": 2, "price": 8.99 },
+    { "itemName": "Fries", "quantity": 1, "price": 3.99 },
+    { "itemName": "Coke", "quantity": 2, "price": 2.50 }
   ],
   "totalAmount": 26.97
 }
 ```
 
-**Successful response (201 Created)**
+✅ **Success (201)**
 ```json
 {
   "success": true,
@@ -140,335 +133,102 @@ Base URL: `http://localhost:8080` (adjust port if different)
   "data": {
     "id": 4,
     "customerName": "Alice Johnson",
-    "totalAmount": 26.97,
     "status": "PENDING",
-    "orderTime": "2025-09-14T11:17:33.215756",
-    "processedTime": null,
-    "items": [
-      {
-        "itemName": "Burger",
-        "quantity": 2,
-        "price": 8.99
-      },
-      {
-        "itemName": "Fries",
-        "quantity": 1,
-        "price": 3.99
-      },
-      {
-        "itemName": "Coke",
-        "quantity": 2,
-        "price": 2.50
-      }
-    ]
+    "totalAmount": 26.97,
+    "items": [...]
   }
 }
 ```
 
-**Validation error (400 Bad Request)**
+❌ **Validation error (400)**
 ```json
 {
   "success": false,
   "message": "Invalid order state",
-  "timeStamp": "2025-09-14T11:15:15.2112686",
   "error": {
     "status": "BAD_REQUEST",
-    "message": "Invalid order state",
-    "subErrors": [
-      "Total amount does not match sum of items"
-    ]
+    "subErrors": ["Total amount does not match sum of items"]
   }
 }
 ```
+</details>
 
----
+<details>
+<summary><b>▶️ Get Order by ID</b></summary>
 
-## Get Order by ID
+**GET** `/api/orders/1`
 
-**GET** `http://localhost:8080/api/orders/1`
-
-**Successful response (200)**
+✅ **Success (200)**
 ```json
 {
   "success": true,
   "message": "Order retrieved successfully",
-  "timeStamp": "2025-09-14T11:18:10.4862606",
   "data": {
     "id": 3,
     "customerName": "Bob Johnson",
-    "totalAmount": 42.00,
     "status": "DELIVERED",
-    "orderTime": "2025-09-14T14:47:00",
-    "processedTime": null,
-    "items": [
-      {
-        "itemName": "Pasta",
-        "quantity": 2,
-        "price": 12.99
-      },
-      {
-        "itemName": "Garlic Bread",
-        "quantity": 1,
-        "price": 4.99
-      },
-      {
-        "itemName": "Ice Cream",
-        "quantity": 2,
-        "price": 5.50
-      }
-    ]
+    "items": [...]
   }
 }
 ```
+</details>
 
----
+<details>
+<summary><b>▶️ Get All Orders (Paginated)</b></summary>
 
-## Get All Orders (Paginated)
+**GET** `/api/orders?page=0&size=10&sortBy=orderTime&sortDirection=DESC`
 
-**GET** `http://localhost:8080/api/orders?page=0&size=10&sortBy=orderTime&sortDirection=DESC`
+✅ **Response (200)**  
+Paginated list of orders with metadata.
+</details>
 
-**Sample response (200)**
-```json
-{
-  "success": true,
-  "message": "Orders retrieved successfully",
-  "timeStamp": "2025-09-14T11:18:38.9136543",
-  "data": {
-    "content": [
-      {
-        "id": 1,
-        "customerName": "John Doe",
-        "totalAmount": 25.99,
-        "status": "PENDING",
-        "orderTime": "2025-09-14T16:47:00",
-        "processedTime": null,
-        "items": [
-          {
-            "itemName": "Burger",
-            "quantity": 2,
-            "price": 8.99
-          },
-          {
-            "itemName": "Fries",
-            "quantity": 1,
-            "price": 3.99
-          },
-          {
-            "itemName": "Coke",
-            "quantity": 2,
-            "price": 2.50
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "customerName": "Jane Smith",
-        "totalAmount": 35.50,
-        "status": "PROCESSED",
-        "orderTime": "2025-09-14T15:47:00",
-        "processedTime": null,
-        "items": [
-          {
-            "itemName": "Pizza",
-            "quantity": 1,
-            "price": 15.99
-          },
-          {
-            "itemName": "Salad",
-            "quantity": 1,
-            "price": 7.99
-          },
-          {
-            "itemName": "Juice",
-            "quantity": 2,
-            "price": 3.50
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "customerName": "Bob Johnson",
-        "totalAmount": 42.00,
-        "status": "DELIVERED",
-        "orderTime": "2025-09-14T14:47:00",
-        "processedTime": null,
-        "items": [
-          {
-            "itemName": "Pasta",
-            "quantity": 2,
-            "price": 12.99
-          },
-          {
-            "itemName": "Garlic Bread",
-            "quantity": 1,
-            "price": 4.99
-          },
-          {
-            "itemName": "Ice Cream",
-            "quantity": 2,
-            "price": 5.50
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "customerName": "Alice Johnson",
-        "totalAmount": 26.97,
-        "status": "PROCESSED",
-        "orderTime": "2025-09-14T11:17:33",
-        "processedTime": "2025-09-14T11:17:35",
-        "items": [
-          {
-            "itemName": "Burger",
-            "quantity": 2,
-            "price": 8.99
-          },
-          {
-            "itemName": "Fries",
-            "quantity": 1,
-            "price": 3.99
-          },
-          {
-            "itemName": "Coke",
-            "quantity": 2,
-            "price": 2.50
-          }
-        ]
-      }
-    ],
-    "pageNumber": 0,
-    "pageSize": 10,
-    "totalElements": 4,
-    "totalPages": 1,
-    "first": true,
-    "last": true
-  }
-}
-```
----
-
-## Get Order Status
-
-**GET** `http://localhost:8080/api/orders/1/status`
-
-**Response (200)**
-```json
-{
-  "success": true,
-  "message": "Order status retrieved successfully",
-  "timeStamp": "2025-09-14T14:17:54.09427",
-  "data": {
-    "orderId": 1,
-    "status": "PROCESSED",
-    "orderTime": "2025-09-14T13:27:08",
-    "processedTime": "2025-09-14T13:27:13"
-  }
-}
-```
-
----
-
-## Update Order Status
+<details>
+<summary><b>▶️ Update Order Status</b></summary>
 
 **PATCH** `/api/orders/{id}/status`
-
-**Request**
 ```json
 { "status": "CANCELLED" }
 ```
-
-**Response (200)**
-```json
-{
-  "success": true,
-  "message": "Order status updated successfully",
-  "timeStamp": "2025-09-14T11:25:35.3492948",
-  "data": {
-    "id": 10,
-    "customerName": "Ravi Johnson",
-    "totalAmount": 26.97,
-    "status": "CANCELLED",
-    "orderTime": "2025-09-14T11:25:30",
-    "processedTime": null,
-    "items": [
-      {
-        "itemName": "Pizze",
-        "quantity": 2,
-        "price": 8.99
-      },
-      {
-        "itemName": "Roll",
-        "quantity": 1,
-        "price": 3.99
-      },
-      {
-        "itemName": "Sprite",
-        "quantity": 2,
-        "price": 2.50
-      }
-    ]
-  }
-}
-```
-
-## Order Status Flow
-
-```
-PENDING → PROCESSING → PROCESSED → DELIVERED
-    ↓                      ↓
-CANCELLED            CANCELLED
-```
-
-Valid status transitions:  
-- PENDING → PROCESSING, CANCELLED  
-- PROCESSING → PROCESSED, CANCELLED  
-- PROCESSED → DELIVERED  
-- DELIVERED → (no transitions)  
-- CANCELLED → (no transitions)  
+✅ **Response (200)**  
+Updates and returns order with new status.
+</details>
 
 ---
 
-## Asynchronous Processing
+## 🔄 Order Status Flow
 
-- Orders are added to an **in-memory queue**.
-- A background consumer processes them, moving them from `PENDING → PROCESSING → PROCESSED`.
-- A delay of ~5 seconds simulates like real-world processing.
-
-### Testing the Queue
-
-- Create multiple orders rapidly.
-- Check status → should be `PENDING`.
-- Wait a few seconds.
-- Status should move to `PROCESSED`.
-
----
-
-## Error Handling
-
-- **400 Bad Request** → Validation errors, invalid transitions.
-- **404 Not Found** → Order not found.
-- **500 Internal Server Error** → Unexpected errors.
-
-All errors follow consistent JSON response format:
-```json
-{
-  "success": false,
-  "message": "An unexpected error occurred",
-  "timeStamp": "2025-09-14T11:26:19.292407",
-  "error": {
-    "status": "INTERNAL_SERVER_ERROR",
-    "message": "An unexpected error occurred",
-    "subErrors": [
-      "JSON parse error: Cannot deserialize value of type `com.foodorderservice.Foodie.entity.enums.OrderStatus` from String \"CANCsELLED\": not one of the values accepted for Enum class: [CANCELLED, PROCESSING, DELIVERED, PROCESSED, PENDING]"
-    ]
-  }
-}
+```mermaid
+flowchart LR
+  PENDING --> PROCESSING --> PROCESSED --> DELIVERED
+  PENDING --> CANCELLED
+  PROCESSING --> CANCELLED
 ```
 
 ---
 
-## Contact
+## ⚡ Asynchronous Processing
 
-- Name: Sankalp
-- Email - sankalpagarwal1304@gmail.com
-- Link: [https://github.com/git-Sankalp-Agarwal/Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)
+- Orders initially → **PENDING**
+- A background consumer moves them:  
+  `PENDING → PROCESSING → PROCESSED`
+- Simulates ~5s delay to mimic real-world behavior.
+
+---
+
+## 🚨 Error Handling
+
+- `400 Bad Request` → Validation failures
+- `404 Not Found` → Order not found
+- `500 Internal Server Error` → Unexpected errors
+
+📦 All errors return a **consistent JSON format** with `success=false`, `message`, and `error` details.
+
+---
+
+## 📬 Contact
+
+👤 **Sankalp**  
+📧 Email: [sankalpagarwal1304@gmail.com](mailto:sankalpagarwal1304@gmail.com)  
+🔗 GitHub: [Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)
+
+---
