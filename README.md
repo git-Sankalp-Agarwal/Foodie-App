@@ -111,20 +111,33 @@ java -jar target/foodie-app-1.0.0.jar
 <details>
 <summary><b>▶️ Create Order</b></summary>
 
-**POST** `/api/orders`
+**POST** `http://localhost:8080/api/orders`
+
+**Request JSON:**
 ```json
 {
   "customerName": "Alice Johnson",
   "items": [
-    { "itemName": "Burger", "quantity": 2, "price": 8.99 },
-    { "itemName": "Fries", "quantity": 1, "price": 3.99 },
-    { "itemName": "Coke", "quantity": 2, "price": 2.50 }
+    {
+      "itemName": "Burger",
+      "quantity": 2,
+      "price": 8.99
+    },
+    {
+      "itemName": "Fries",
+      "quantity": 1,
+      "price": 3.99
+    },
+    {
+      "itemName": "Coke",
+      "quantity": 2,
+      "price": 2.50
+    }
   ],
   "totalAmount": 26.97
 }
-```
 
-✅ **Success (201)**
+✅ **Successful response (201 Created)**
 ```json
 {
   "success": true,
@@ -133,21 +146,43 @@ java -jar target/foodie-app-1.0.0.jar
   "data": {
     "id": 4,
     "customerName": "Alice Johnson",
-    "status": "PENDING",
     "totalAmount": 26.97,
-    "items": [...]
+    "status": "PENDING",
+    "orderTime": "2025-09-14T11:17:33.215756",
+    "processedTime": null,
+    "items": [
+      {
+        "itemName": "Burger",
+        "quantity": 2,
+        "price": 8.99
+      },
+      {
+        "itemName": "Fries",
+        "quantity": 1,
+        "price": 3.99
+      },
+      {
+        "itemName": "Coke",
+        "quantity": 2,
+        "price": 2.50
+      }
+    ]
   }
 }
 ```
 
-❌ **Validation error (400)**
+❌ **Validation error (400 Bad Request)**
 ```json
 {
   "success": false,
   "message": "Invalid order state",
+  "timeStamp": "2025-09-14T11:15:15.2112686",
   "error": {
     "status": "BAD_REQUEST",
-    "subErrors": ["Total amount does not match sum of items"]
+    "message": "Invalid order state",
+    "subErrors": [
+      "Total amount does not match sum of items"
+    ]
   }
 }
 ```
@@ -163,11 +198,31 @@ java -jar target/foodie-app-1.0.0.jar
 {
   "success": true,
   "message": "Order retrieved successfully",
+  "timeStamp": "2025-09-14T11:18:10.4862606",
   "data": {
     "id": 3,
     "customerName": "Bob Johnson",
+    "totalAmount": 42.00,
     "status": "DELIVERED",
-    "items": [...]
+    "orderTime": "2025-09-14T14:47:00",
+    "processedTime": null,
+    "items": [
+      {
+        "itemName": "Pasta",
+        "quantity": 2,
+        "price": 12.99
+      },
+      {
+        "itemName": "Garlic Bread",
+        "quantity": 1,
+        "price": 4.99
+      },
+      {
+        "itemName": "Ice Cream",
+        "quantity": 2,
+        "price": 5.50
+      }
+    ]
   }
 }
 ```
@@ -176,21 +231,189 @@ java -jar target/foodie-app-1.0.0.jar
 <details>
 <summary><b>▶️ Get All Orders (Paginated)</b></summary>
 
-**GET** `/api/orders?page=0&size=10&sortBy=orderTime&sortDirection=DESC`
+**GET** `http://localhost:8080/api/orders?page=0&size=10&sortBy=orderTime&sortDirection=DESC`
 
-✅ **Response (200)**  
-Paginated list of orders with metadata.
+✅ **Response (200)**
+```json
+{
+  "success": true,
+  "message": "Orders retrieved successfully",
+  "timeStamp": "2025-09-14T11:18:38.9136543",
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "customerName": "John Doe",
+        "totalAmount": 25.99,
+        "status": "PENDING",
+        "orderTime": "2025-09-14T16:47:00",
+        "processedTime": null,
+        "items": [
+          {
+            "itemName": "Burger",
+            "quantity": 2,
+            "price": 8.99
+          },
+          {
+            "itemName": "Fries",
+            "quantity": 1,
+            "price": 3.99
+          },
+          {
+            "itemName": "Coke",
+            "quantity": 2,
+            "price": 2.50
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "customerName": "Jane Smith",
+        "totalAmount": 35.50,
+        "status": "PROCESSED",
+        "orderTime": "2025-09-14T15:47:00",
+        "processedTime": null,
+        "items": [
+          {
+            "itemName": "Pizza",
+            "quantity": 1,
+            "price": 15.99
+          },
+          {
+            "itemName": "Salad",
+            "quantity": 1,
+            "price": 7.99
+          },
+          {
+            "itemName": "Juice",
+            "quantity": 2,
+            "price": 3.50
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "customerName": "Bob Johnson",
+        "totalAmount": 42.00,
+        "status": "DELIVERED",
+        "orderTime": "2025-09-14T14:47:00",
+        "processedTime": null,
+        "items": [
+          {
+            "itemName": "Pasta",
+            "quantity": 2,
+            "price": 12.99
+          },
+          {
+            "itemName": "Garlic Bread",
+            "quantity": 1,
+            "price": 4.99
+          },
+          {
+            "itemName": "Ice Cream",
+            "quantity": 2,
+            "price": 5.50
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "customerName": "Alice Johnson",
+        "totalAmount": 26.97,
+        "status": "PROCESSED",
+        "orderTime": "2025-09-14T11:17:33",
+        "processedTime": "2025-09-14T11:17:35",
+        "items": [
+          {
+            "itemName": "Burger",
+            "quantity": 2,
+            "price": 8.99
+          },
+          {
+            "itemName": "Fries",
+            "quantity": 1,
+            "price": 3.99
+          },
+          {
+            "itemName": "Coke",
+            "quantity": 2,
+            "price": 2.50
+          }
+        ]
+      }
+    ],
+    "pageNumber": 0,
+    "pageSize": 10,
+    "totalElements": 4,
+    "totalPages": 1,
+    "first": true,
+    "last": true
+  }
+}
+```
 </details>
+
+<details>
+<summary><b>▶️ Get Order Status</b></summary>
+
+**GET** `http://localhost:8080/api/orders/1/status`
+✅ **Response (200)**
+```json
+{
+  "success": true,
+  "message": "Order status retrieved successfully",
+  "timeStamp": "2025-09-14T14:17:54.09427",
+  "data": {
+    "orderId": 1,
+    "status": "PROCESSED",
+    "orderTime": "2025-09-14T13:27:08",
+    "processedTime": "2025-09-14T13:27:13"
+  }
+}
+```
+</details>
+
 
 <details>
 <summary><b>▶️ Update Order Status</b></summary>
 
-**PATCH** `/api/orders/{id}/status`
+**PATCH** `http://localhost:8080/api/orders/1/status`
 ```json
 { "status": "CANCELLED" }
 ```
-✅ **Response (200)**  
-Updates and returns order with new status.
+✅ **Response (200)**
+```json
+{
+  "success": true,
+  "message": "Order status updated successfully",
+  "timeStamp": "2025-09-14T11:25:35.3492948",
+  "data": {
+    "id": 10,
+    "customerName": "Ravi Johnson",
+    "totalAmount": 26.97,
+    "status": "CANCELLED",
+    "orderTime": "2025-09-14T11:25:30",
+    "processedTime": null,
+    "items": [
+      {
+        "itemName": "Pizze",
+        "quantity": 2,
+        "price": 8.99
+      },
+      {
+        "itemName": "Roll",
+        "quantity": 1,
+        "price": 3.99
+      },
+      {
+        "itemName": "Sprite",
+        "quantity": 2,
+        "price": 2.50
+      }
+    ]
+  }
+}
+```
 </details>
 
 ---
@@ -208,8 +431,9 @@ flowchart LR
 
 ## ⚡ Asynchronous Processing
 
-- Orders initially → **PENDING**
-- A background consumer moves them:  
+- Orders are added to an **in-memory queue**
+- Orders initial status → **PENDING**
+- A background consumer processes them, moving them from  
   `PENDING → PROCESSING → PROCESSED`
 - Simulates ~5s delay to mimic real-world behavior.
 
@@ -223,12 +447,27 @@ flowchart LR
 
 📦 All errors return a **consistent JSON format** with `success=false`, `message`, and `error` details.
 
+All errors follow consistent JSON response format:
+```json
+{
+  "success": false,
+  "message": "An unexpected error occurred",
+  "timeStamp": "2025-09-14T11:26:19.292407",
+  "error": {
+    "status": "INTERNAL_SERVER_ERROR",
+    "message": "An unexpected error occurred",
+    "subErrors": [
+      "JSON parse error: Cannot deserialize value of type `com.foodorderservice.Foodie.entity.enums.OrderStatus` from String \"CANCsELLED\": not one of the values accepted for Enum class: [CANCELLED, PROCESSING, DELIVERED, PROCESSED, PENDING]"
+    ]
+  }
+}
+
 ---
 
 ## 📬 Contact
 
 👤 **Sankalp**  
 📧 Email: [sankalpagarwal1304@gmail.com](mailto:sankalpagarwal1304@gmail.com)  
-🔗 GitHub: [Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)
+🔗 GitHub: [Foodie-App](https://github.com/git-Sankalp-Agarwal/Foodie-App)  
 
 ---
